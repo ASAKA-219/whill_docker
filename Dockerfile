@@ -10,7 +10,7 @@ WORKDIR /whill_docker/
 # Install Nvidia Container Toollit
 RUN distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
   && apt update \
-  && apt install -y curl \
+  && apt install -y curl python3-pip\
   && curl -s -L https://nvidia.github.io/libnvidia-container/gpgkey | apt-key add - \
   && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
 
@@ -65,6 +65,16 @@ RUN cd catkin_ws/src \
   && source /root/.bashrc \
   && sudo apt update \
   && sudo rosdep init && rosdep update
+
+#yolov8のパッケージをインストール
+RUN git clone https://github.com/ultralytics/ultralytics \
+  && cd ultralytics \
+  && pip install -e '.[dev]'
+RUN pip3 install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+RUN cd catkin_ws/src \
+  && git clone https://github.com/ASAKA-219/yolov8_ros \
+  && cd .. && catkin build
 
 # Setup whill env
 RUN echo 'KERNEL=="ttyUSB[0-9]*", MODE="0666"' >> /lib/udev/rules.d/50-udev-default.rules
