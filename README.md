@@ -1,4 +1,12 @@
 # whill_ws
+## .envファイルの設定
+```bash
+id roboworks
+```
+でパソコンのユーザーidを割り当てる。ユーザーとグループが1000であればok。
+そして、.envファイルを開いてユーザー名とグループ名（おそらくターミナルに表示されてる右のやつがグループ名）を書き込んで終わり。
+
+## ビルド
 Dockerのビルドはdocker-composeで行います。やり方は、
 ```bash
 docker-compose build
