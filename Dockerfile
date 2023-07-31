@@ -81,8 +81,8 @@ RUN echo 'KERNEL=="ttyUSB[0-9]*", MODE="0666"' >> /lib/udev/rules.d/50-udev-defa
 
 #USBカメラの権限を付与し、起動の準備
 RUN cd catkin_ws/src \
-  && echo 'export TTY_WHILL=/dev/ttyUSB0' >> /root/.bashrc \
-  && source /root/.bashrc \
+  && echo 'export TTY_WHILL=/dev/ttyUSB0' >> /home/${USER_NAME}/.bashrc \
+  && source /home/${USER_NAME}/.bashrc \
   #&& sudo chmod 666 /dev/ttyUSB0
 
 # Timezone, Launguage設定
@@ -113,7 +113,7 @@ RUN useradd -u ${UID} -g ${GID} -s /bin/bash -m ${USER_NAME}
 
 #PS1プロンプトをカスタマイズ
 RUN echo "PS1='\[\033[48;5;255m\]\[\033[30m\]whill:\[\033[0m\]\[\033[1;32m\]\u\[\033[0m\]\[\033[1;33m\]@\[\033[0m\]\[\033[1;33m\]\w\[\033[0m\]\$ '" >> /home/${USER_NAME}/.bashrc
-RUN echo "source ~/will_docker/catkin_ws/setup.bash" >> /root/.bashrc
+RUN echo 'source /whill_docker/catkin_ws/devel/setup.bash' >> /home/${USER_NAME}/.bashrc
 
 USER ${USER_NAME}
 
